@@ -5,13 +5,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import pages.*;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class BaseTest {
     WebDriver driver;
-
+    LoginPage loginPage;
+    AppPage appPage;
+    RegistrationModalPage registrationModalPage;
+    RegistrationPage registrationPage;
+    RestorePasswordPage restorePasswordPage;
+    LoginService loginService;
 
     @BeforeMethod
     public void setting(){
@@ -22,6 +28,13 @@ public class BaseTest {
         options.addArguments("--lang=ru");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.of(5, ChronoUnit.SECONDS));
+
+        loginPage = new LoginPage(driver);
+        appPage = new AppPage(driver);
+        registrationModalPage = new RegistrationModalPage(driver);
+        registrationPage = new RegistrationPage(driver);
+        restorePasswordPage = new RestorePasswordPage(driver);
+        loginService = new LoginService(driver);
     }
 
     @AfterMethod(alwaysRun = true)
