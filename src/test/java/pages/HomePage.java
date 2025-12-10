@@ -3,11 +3,11 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class AppPage extends BasePage{
+public class HomePage extends BasePage{
 
-    private static final By TITLE = (By.xpath("//h1[contains(text(), 'Первые шаги в МоемСкладе')]"));
+    private static final By TITLE = (By.xpath("//h2[contains(@class, 'css-10_0_0--vzqnO')]"));
 
-    public AppPage(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         super(driver);
     }
 

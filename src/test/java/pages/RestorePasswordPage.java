@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class RestorePasswordPage extends BasePage{
 
-    private static final By TITLE_RESTORE_PASSWORD = By.xpath("//h1[text()='Восстановление пароля']");
+    private static final By INPUT_LOGIN = By.id("lable-login");
 
     public RestorePasswordPage(WebDriver driver) {
         super(driver);
@@ -13,6 +13,6 @@ public class RestorePasswordPage extends BasePage{
 
     @Override
     public boolean isPageOpened() {
-        return isExist(TITLE_RESTORE_PASSWORD);
+        return isExist(INPUT_LOGIN);
     }
 }

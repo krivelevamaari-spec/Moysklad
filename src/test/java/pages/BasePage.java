@@ -13,7 +13,7 @@ public abstract class BasePage {
     WebDriver driver;
     WebDriverWait wait;
 
-    public final String BASE_URL = "https://www.moysklad.ru";
+    public final String BASE_URL = "https://online.moysklad.ru";
 
     public BasePage(WebDriver driver) {
         this.driver = driver;

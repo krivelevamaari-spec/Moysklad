@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 public class BaseTest {
     WebDriver driver;
     LoginPage loginPage;
-    AppPage appPage;
+    HomePage homePage;
     RegistrationModalPage registrationModalPage;
     RegistrationPage registrationPage;
     RestorePasswordPage restorePasswordPage;
@@ -30,7 +30,7 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(Duration.of(5, ChronoUnit.SECONDS));
 
         loginPage = new LoginPage(driver);
-        appPage = new AppPage(driver);
+        homePage = new HomePage(driver);
         registrationModalPage = new RegistrationModalPage(driver);
         registrationPage = new RegistrationPage(driver);
         restorePasswordPage = new RestorePasswordPage(driver);

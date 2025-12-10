@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class RegistrationPage extends BasePage{
 
-    private static final By TITLE_REGISTRATION = (By.xpath("//h1[text()='Регистрация']"));
+    private static final By INPUT_REGISTRATION = By.id("email");
 
     public RegistrationPage(WebDriver driver) {
         super(driver);
@@ -13,6 +13,6 @@ public class RegistrationPage extends BasePage{
 
     @Override
     public boolean isPageOpened() {
-        return isExist(TITLE_REGISTRATION);
+        return isExist(INPUT_REGISTRATION);
     }
 }

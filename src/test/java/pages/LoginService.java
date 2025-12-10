@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginService extends BasePage{
 
-    private static final By TITLE_LOGIN_SERVICE = By.id("serviceTitle");
+    private static final By INPUT_LOGIN_SERVICE = By.id("username");
 
     public LoginService(WebDriver driver) {
         super(driver);
@@ -13,6 +13,6 @@ public class LoginService extends BasePage{
 
     @Override
     public boolean isPageOpened() {
-        return isExist(TITLE_LOGIN_SERVICE);
+        return isExist(INPUT_LOGIN_SERVICE);
     }
 }
