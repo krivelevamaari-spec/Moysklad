@@ -19,14 +19,16 @@ public abstract class BasePage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
+
     public abstract boolean isPageOpened();
 
-    protected boolean isExist(By locator){
+    protected boolean isExist(By locator) {
         try {
             return driver.findElement(locator).isDisplayed();
 
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
+    public abstract void open();
 }

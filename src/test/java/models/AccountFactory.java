@@ -1,0 +1,20 @@
+package models;
+
+import com.github.javafaker.Faker;
+
+public class AccountFactory {
+
+    static Faker faker = new Faker();
+
+    public static Account get() {
+        return Account.builder()
+                .name(faker.name().firstName())
+                .secondname(faker.lebowski().actor())
+                .lastname(faker.gameOfThrones().dragon())
+                .phone(faker.phoneNumber().phoneNumber())
+                .position(faker.gameOfThrones().quote())
+                .INN("")
+                .build();
+    }
+}
+

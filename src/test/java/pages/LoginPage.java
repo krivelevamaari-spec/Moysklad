@@ -24,7 +24,8 @@ public class LoginPage extends BasePage{
         return isExist(PRIMARY_BUTTON);
     }
 
-    public void openPage(){
+    @Override
+    public void open() {
         driver.get(BASE_URL);
     }
 

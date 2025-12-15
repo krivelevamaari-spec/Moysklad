@@ -15,4 +15,9 @@ public class RestorePasswordPage extends BasePage{
     public boolean isPageOpened() {
         return isExist(INPUT_LOGIN);
     }
+
+    @Override
+    public void open() {
+        driver.get(BASE_URL + "/restorePassword");
+    }
 }

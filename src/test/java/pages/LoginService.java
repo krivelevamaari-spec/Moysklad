@@ -15,4 +15,9 @@ public class LoginService extends BasePage{
     public boolean isPageOpened() {
         return isExist(INPUT_LOGIN_SERVICE);
     }
+
+    @Override
+    public void open() {
+        driver.get(BASE_URL + "/login?service");
+    }
 }

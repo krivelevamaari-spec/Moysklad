@@ -15,4 +15,9 @@ public class HomePage extends BasePage{
     public boolean isPageOpened() {
         return isExist(TITLE);
     }
+
+    @Override
+    public void open() {
+        driver.get(BASE_URL + "/app/#homepage");
+    }
 }

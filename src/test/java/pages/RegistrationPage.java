@@ -15,4 +15,9 @@ public class RegistrationPage extends BasePage{
     public boolean isPageOpened() {
         return isExist(INPUT_REGISTRATION);
     }
+
+    @Override
+    public void open() {
+        driver.get(BASE_URL + "/registration");
+    }
 }
