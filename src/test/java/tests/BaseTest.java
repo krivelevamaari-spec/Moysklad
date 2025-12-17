@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -25,6 +26,7 @@ public class BaseTest {
 
     @Parameters({"browser"})
     @BeforeMethod
+    @Step("Настройка драйвера(браузер = '{browser}')")
     public void setting(@Optional("chrome") String browser, ITestContext testContext){
 
         if (browser.equals("chrome")) {
@@ -52,6 +54,7 @@ public class BaseTest {
     }
 
     @AfterMethod(alwaysRun = true)
+    @Step("Закрыть браузер")
     public void completion(){
         driver.quit();
     }

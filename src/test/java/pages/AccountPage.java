@@ -2,6 +2,7 @@ package pages;
 
 import elements.Button;
 import elements.Input;
+import io.qameta.allure.Step;
 import models.Account;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,6 +29,7 @@ public class AccountPage extends BasePage{
         driver.get(BASE_URL + "app/#account");
     }
 
+    @Step("Сформировать параметры")
     public void createSettings(Account account) {
         new Input(driver, "Имя").clearAndWrite(account.getName());
         new Input(driver, "Отчество").clearAndWrite(account.getSecondname());
