@@ -18,6 +18,10 @@
         <javafaker.version>1.0.2</javafaker.version>
         <aspectjweaver.version>1.9.24</aspectjweaver.version>
         <allure-testng.version>2.13.9</allure-testng.version>
+        <allure-maven.version>2.10.0</allure-maven.version>
+        <log4j-core.version>2.24.3</log4j-core.version>
+        <log4j-api.version>2.24.3</log4j-api.version>
+        <log4j-slf4j2-impl.version>2.24.3</log4j-slf4j2-impl.version>
         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
     </properties>
 
@@ -42,13 +46,36 @@
            <plugin>
                <groupId>io.qameta.allure</groupId>
                <artifactId>allure-maven</artifactId>
-               <version>2.10.0</version>
+               <version>${allure-maven.version}</version>
            </plugin>
 
        </plugins>
    </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version> <!-- актуальная на 2025 -->
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Log4j 2 - API -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SLF4J Bridge (чтобы перехватывать логи от Selenium/TestNG/Allure) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j-slf4j2-impl.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
@@ -87,6 +114,4 @@
             <version>${javafaker.version}</version>
         </dependency>
     </dependencies>
-
-
 </project>

@@ -1,6 +1,7 @@
 package pages;
 
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -9,12 +10,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
+
 public abstract class BasePage {
 
     WebDriver driver;
     WebDriverWait wait;
 
-    public final String BASE_URL = "https://online.moysklad.ru";
+    public final String BASE_URL = "https://online.moysklad.ru/";
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -31,6 +33,7 @@ public abstract class BasePage {
             return false;
         }
     }
+
     @Step("Открыть страницу")
     public abstract void open();
 }

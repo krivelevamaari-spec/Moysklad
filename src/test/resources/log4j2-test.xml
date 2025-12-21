@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!-- Путь для лог-файлов -->
+        <Property name="logPath">target/logs</Property>
+        <Property name="fileName">test</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 🖥️ Консоль (цветной вывод!) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{[%d{HH:mm:ss}] [%-5level] %c{1} - %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=blue}" />
+        </Console>
+
+        <!-- 📄 Файл (полный лог) -->
+        <RollingFile name="File" fileName="${logPath}/${fileName}.log"
+                     filePattern="${logPath}/${fileName}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{ISO8601}] [%-5level] [%t] %c{1} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- 📎 Allure attachment (логи в отчёт!) -->
+        <RollingFile name="AllureLog" fileName="target/allure-results/test.log"
+                     filePattern="target/allure-results/test-%i.log">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%-5level] %c{1} - %msg%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 🧪 Наши тесты -->
+        <Logger name="tests" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="AllureLog"/>
+        </Logger>
+
+        <!-- 🕷️ Selenium (уменьшаем шум) -->
+        <Logger name="org.openqa.selenium" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+
+        <!-- 🧪 TestNG -->
+        <Logger name="org.testng" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- 🧵 Всё остальное -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

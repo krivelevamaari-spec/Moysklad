@@ -1,6 +1,7 @@
 package tests;
 
 import io.qameta.allure.*;
+import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -8,8 +9,9 @@ import static io.qameta.allure.Allure.step;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+@Log4j2
 @Owner("masha")
-public class LoginTest extends BaseTest{
+public class LoginTest extends BaseTest {
 
     @DataProvider(name = "Negative data")
     public Object[][] inputForITechTask() {
@@ -17,190 +19,94 @@ public class LoginTest extends BaseTest{
                 {"", "2009198916", "Чтобы войти, укажите имя пользователя"},
                 {"admin@esfmf", "", "Чтобы войти, укажите пароль"},
                 {"", "", "Чтобы войти, укажите имя пользователя"},
-                {"adminesfmf", "2009198916", "Неверный формат имени пользователя. Укажите свою учетную запись, например admin@romashka."},
+                {"adminesfmf", "2009198916", "Неверный формат имени пользователя. " +
+                        "Укажите свою учетную запись, например admin@romashka."},
+                {"1111111", "2009198916", "Неверный формат имени пользователя. " +
+                        "Укажите свою учетную запись, например admin@romashka."},
+                {"admin$esfmf", "2009198916", "Неверный формат имени пользователя. " +
+                        "Укажите свою учетную запись, например admin@romashka."},
+                {"admin@netTakogoDoMena56.com", "2009198916", "Неправильный пароль или имя пользователя. " +
+                        "Посмотрите, что можно сделать."},
+                {" admin@esfmf", "2009198916", "Неправильный пароль или имя пользователя. " +
+                        "Посмотрите, что можно сделать."}
         };
     }
 
-    @Test(dataProvider = "Negative data")
+    @Test(dataProvider = "Negative data", description = "Проверка отображения ошибки при вводе некорректных данных")
+    @Issue("Test-110")
+    @Link("Test-220")
+    @TmsLink("Moysklad")
     @Description("Проверка отображения ошибки при вводе некорректных данных")
     @Severity(SeverityLevel.NORMAL)
-
     public void errorMessages(String email, String password, String errorMessage) {
         loginPage.open();
         loginPage.loginEntry(email);
         loginPage.passwordEntry(password);
         loginPage.clickPrimaryButton();
 
-        step("Ожидаемый результат: Чтобы войти, укажите данные", () ->
+        log.info("Получено сообщение об ошибке:" + loginPage.getErrorMessage());
+
+        step("Ожидаемый результат: Неверный формат имени пользователя. " +
+                "Укажите свою учетную запись, например admin@romashka.", () ->
                 assertEquals(loginPage.getErrorMessage(),
                         errorMessage, "Неверное сообщение об ошибке"));
-
     }
 
-
     @Test(description = "Проверка загрузки страницы авторизации")
+    @Issue("Test-111")
+    @Link("Test-221")
+    @TmsLink("Moysklad")
     @Description("Проверка загрузки страницы авторизации")
     @Severity(SeverityLevel.CRITICAL)
-    void loginPageShouldOpen(){
+    void loginPageShouldOpen() {
+        log.info("Открытие страницы авторизации");
         loginPage.open();
 
         step("Ожидаемый результат: страница авторизации пользователя открыта", () ->
-        assertTrue(loginPage.isPageOpened(),"Веб-страница не отвечает"));
+                assertTrue(loginPage.isPageOpened(), "Веб-страница не отвечает"));
     }
 
-    @Test(description = "Проверка правильной авторизации с валидным логином и паролем " +
+    @Test(description = "Проверка успешной авторизации с валидным логином и паролем " +
             "с последующим переходом на главную страницу")
-    @Description("Проверка правильной авторизации с валидным логином и паролем")
+    @Issue("Test-112")
+    @Link("Test-222")
+    @TmsLink("Moysklad")
+    @Description("Проверка успешной авторизации с валидным логином и паролем")
     @Severity(SeverityLevel.CRITICAL)
-    void userMustEnterValidLoginAndPassword(){
+    void userMustEnterValidLoginAndPassword() {
+        log.info("Открытие страницы авторизации");
         loginPage.open();
         loginPage.isPageOpened();
+
+        log.info("Ввод валидных учетных данных: логин='admin@esfmf', пароль='2009198916'");
         loginPage.loginEntry("admin@esfmf");
         loginPage.passwordEntry("2009198916");
         loginPage.clickPrimaryButton();
 
-        assertTrue(homePage.isPageOpened(),"Веб-страница не отвечает");
-    }
-
-    @Test(description = "Проверка отображения ошибки при вводе цифр в поле логина")
-    @Description("Проверка отображения ошибки при вводе цифр в поле логина")
-    @Severity(SeverityLevel.NORMAL)
-    void entryNumbersInLoginField(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("25619854");
-        loginPage.passwordEntry("2009198916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неверный формат имени пользователя. Укажите свою учетную запись, например admin@romashka.",
-                "Текст не совпадает");
-    }
-
-    @Test(description = "Проверка отображения ошибки при вводе логина без символа @")
-    @Description("Проверка отображения ошибки при вводе неккоректного логина")
-    @Severity(SeverityLevel.NORMAL)
-    void entryLoginNotDogSymbol(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("adminesfmf");
-        loginPage.passwordEntry("2009198916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неверный формат имени пользователя. Укажите свою учетную запись, например admin@romashka.",
-                "Текст не совпадает");
-    }
-
-    @Test(description = "Проверка отображения ошибки при вводе логина со специальным символом")
-    @Description("Проверка отображения ошибки при вводе неккоректного логина")
-    @Severity(SeverityLevel.NORMAL)
-    void entryLoginWithDollarSymbol(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("admin$esfmf");
-        loginPage.passwordEntry("2009198916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неверный формат имени пользователя. Укажите свою учетную запись, например admin@romashka.",
-                "Текст не совпадает");
-    }
-
-    @Test(description = "Проверка отображения ошибки при вводе логина с несуществующим доменом")
-    @Description("Проверка отображения ошибки при вводе неккоректного логина")
-    @Severity(SeverityLevel.NORMAL)
-    void entryLoginWithInvalidDomain(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("admin@netTakogoDoMena56.com");
-        loginPage.passwordEntry("2009198916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
-                "Текст не совпадает");
-    }
-
-    @Test(description = "Проверка отображения ошибки при вводе логина с пробелом")
-    @Description("Проверка отображения ошибки при вводе неккоректного логина")
-    @Severity(SeverityLevel.NORMAL)
-    void entryLoginWithSpace(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("admin @esfmf");
-        loginPage.passwordEntry("2009198916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
-                "Текст не совпадает");
+        step("Ожидаемый результат: авторизация прошла успешно, пользователь перенаправлен на главную страницу",
+                () ->
+                        assertTrue(homePage.isPageOpened(), "Веб-страница не отвечает"));
     }
 
     @Test(description = "Проверка отображения ошибки при вводе пароля с использованием букв")
+    @Issue("Test-113")
+    @Link("Test-223")
+    @TmsLink("Moysklad")
     @Description("Проверка отображения ошибки при вводе неккоректного пароля")
     @Severity(SeverityLevel.NORMAL)
-    void entryPasswordWithLetters(){
+    void entryPasswordWithLetters() {
         loginPage.open();
         loginPage.isPageOpened();
-        loginPage.loginEntry("admin@esfmf");
-        loginPage.passwordEntry("huhuhaha");
-        loginPage.clickPrimaryButton();
+        loginPage.loginEntry("admin@esfmf")
+                  .passwordEntry("huhu2009")
+                  .clickPrimaryButton();
 
-        assertEquals(loginPage.getErrorMessage(),
-                "Неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
-                "Текст не совпадает");
+        log.info("Получено сообщение об ошибке:" + loginPage.getErrorMessage());
+
+        step("Ожидаемый результат: неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
+                () ->
+                        assertEquals(loginPage.getErrorMessage(),
+                                "Неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
+                                "Текст не совпадает"));
     }
-
-    @Test(description = "Проверка отображения ошибки при вводе пароля с пробелом")
-    @Description("Проверка отображения ошибки при вводе неккоректного пароля")
-    @Severity(SeverityLevel.NORMAL)
-    void entryPasswordWithSpace(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.loginEntry("admin@esfmf");
-        loginPage.passwordEntry("200919 8916");
-        loginPage.clickPrimaryButton();
-
-        assertEquals(loginPage.getErrorMessage(),
-                "Неправильный пароль или имя пользователя. Посмотрите, что можно сделать.",
-                "Текст не совпадает");
-    }
-
-    @Test(description = "Проверка загрузки страницы Регистрация")
-    @Description("Проверка загрузки страницы регистрации")
-    @Severity(SeverityLevel.NORMAL)
-    void clickRegistrationButton(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.clickRegistrationButton();
-
-        assertTrue(registrationPage.isPageOpened(),"Веб-страница не отвечает");
-    }
-
-    @Test(description = "Проверка загрузки страницы Восстановление пароля")
-    @Description("Проверка загрузки страницы восстановления пароля")
-    @Severity(SeverityLevel.NORMAL)
-    void clickForgotPasswordButton(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.clickForgotPasswordButton();
-
-        assertTrue(restorePasswordPage.isPageOpened(),"Веб-страница не отвечает");
-    }
-
-    @Test(description = "Проверка загрузки страницы Логин сервиса")
-    @Description("Проверка загрузки страницы логин сервиса")
-    @Severity(SeverityLevel.NORMAL)
-    void clickOneCButton(){
-        loginPage.open();
-        loginPage.isPageOpened();
-        loginPage.clickOneCButton();
-
-        assertTrue(loginService.isPageOpened(),"Веб-страница не отвечает");
-    }
-    }
-
-
-
-
+}

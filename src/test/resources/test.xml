@@ -9,7 +9,7 @@
     </test> <!-- Test -->
 
     <test name="Account">
-        <parameter name="browser" value="safari"></parameter>
+        <parameter name="browser" value="edge"></parameter>
         <classes>
             <class name="tests.AccountTest" />
         </classes>

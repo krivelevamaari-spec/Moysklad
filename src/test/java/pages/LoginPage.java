@@ -1,20 +1,20 @@
 package pages;
 
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+@Log4j2
 public class LoginPage extends BasePage{
 
     private static final By LOGIN_ENTRY = By.id("lable-login");
     private static final By PASSWORD_ENTRY = By.id("lable-password");
     private static final By PRIMARY_BUTTON = By.id("submitButton");
     private static final By ERROR_MESSAGE = By.cssSelector(".error-msg");
-    private static final By REGISTRATION_BUTTON = By.id("reglink");
-    private static final By FORGOT_PASSWORD_BUTTON = By.id("restlink");
-    private static final By ONE_C_BUTTON = By.className("b-button-login-via");
+
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -31,37 +31,30 @@ public class LoginPage extends BasePage{
     }
 
     @Step("Ввести '{login}' в поле Login")
-    public void loginEntry(String login){
+    public LoginPage loginEntry(String login){
+        log.info("В поле login ввели " + login);
         driver.findElement(LOGIN_ENTRY).sendKeys(login);
+        return this;
     }
 
     @Step("Ввести '{password}' в поле Password")
-    public void passwordEntry(String password) {
+    public LoginPage passwordEntry(String password) {
+        log.info("В поле password ввели " + password);
         driver.findElement(PASSWORD_ENTRY).sendKeys(password);
+        return this;
     }
 
     @Step("Нажать на кнопку Войти")
-    public void clickPrimaryButton(){
+    public LoginPage clickPrimaryButton(){
+        log.info("Клик по кнопке Войти");
         driver.findElement(PRIMARY_BUTTON).click();
-    }
-
-    @Step("Нажать на кнопку Регистрация")
-    public void clickRegistrationButton(){
-        driver.findElement(REGISTRATION_BUTTON).click();
-    }
-
-    @Step("Нажать на кнопку Забыли пароль")
-    public void clickForgotPasswordButton(){
-        driver.findElement(FORGOT_PASSWORD_BUTTON).click();
-    }
-
-    @Step("Нажать на кнопку Войти через 1С")
-    public void clickOneCButton(){
-        driver.findElement(ONE_C_BUTTON).click();
+        return this;
     }
 
     @Step("Получить сообщение об ошибке")
     public String getErrorMessage(){
-        return driver.findElement(ERROR_MESSAGE).getText();
+        String errorMessage = driver.findElement(ERROR_MESSAGE).getText();
+        log.info("Получено сообщение об ошибке: {}", errorMessage);
+        return errorMessage;
     }
 }

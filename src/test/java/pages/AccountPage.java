@@ -3,11 +3,12 @@ package pages;
 import elements.Button;
 import elements.Input;
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import models.Account;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
+@Log4j2
 public class AccountPage extends BasePage{
 
     private static final By SETTINGS_MENU = By.xpath("//div[@class='group-label' " +
@@ -39,8 +40,10 @@ public class AccountPage extends BasePage{
         new Input(driver, "ИНН").clearAndWrite(account.getINN());
 
         new Button(driver).clickButton("Сохранить");
+        log.info("Заполнены настройки профиля для пользователя");
     }
 
+    @Step("Проверить, что настройки сохранены")
     public boolean isSettingsSaved() {
         return driver.findElement(CONFIRM_NOTIFICATIONS).isDisplayed();
     }
