@@ -26,6 +26,7 @@ public class BaseTest {
     RestorePasswordPage restorePasswordPage;
     LoginService loginService;
     AccountPage accountPage;
+    ValuesPage valuesPage;
 
     @Parameters({"browser"})
     @BeforeMethod
@@ -54,6 +55,7 @@ public class BaseTest {
         restorePasswordPage = new RestorePasswordPage(driver);
         loginService = new LoginService(driver);
         accountPage = new AccountPage(driver);
+        valuesPage = new ValuesPage(driver);
 
         log.info("Настройка драйвера завершена");
     }
